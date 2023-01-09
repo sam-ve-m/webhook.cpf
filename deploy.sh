@@ -1,6 +1,4 @@
-#!/bin/bash
-
 fission spec init
-fission env create --spec --name caf-cpf-val-env --image nexus.sigame.com.br/fission-async:0.1.7 --builder nexus.sigame.com.br/fission-builder-3.8:0.0.1
-fission fn create --spec --name caf-cpf-val-fn --env caf-cpf-val-env --src "./func/*" --entrypoint main.caf_transaction --executortype newdeploy --maxscale 3
-fission route create --spec --name caf-cpf-val-rt --method POST --url /webhook/caf/cpf_validation --function caf-cpf-val-fn
+fission env create --spec --name wbh-caf-cpf-env --image nexus.sigame.com.br/fission-webhook-caf-cpf:0.1.0-0 --poolsize 0 --version 3 --imagepullsecret "nexus-v3" --spec
+fission fn create --spec --name wbh-caf-cpf-fn --env wbh-caf-cpf-env --code fission.py --targetcpu 80 --executortype newdeploy --maxscale 3 --requestsperpod 10000 --spec
+fission route create --spec --name wbh-caf-cpf-rt --method POST --url /webhook/caf/cpf_validation --function wbh-caf-cpf-fn
