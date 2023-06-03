@@ -3,7 +3,7 @@ from unittest.mock import patch, call, AsyncMock, MagicMock
 import pytest
 from decouple import Config
 
-from func.src.domain.exceptions.exceptions import TransactionNotFound, UniqueIdNotFound, TransactionWasNotUpdated
+from func.src.domain.exceptions.exceptions import TransactionNotFound, CpfNotFound, TransactionWasNotUpdated
 from func.src.repositories.bureau_transactions.repository import BureauTransactionRepository
 
 dummy_env = "dummy env"
@@ -71,11 +71,11 @@ fake_transaction = MagicMock()
 
 @pytest.mark.asyncio
 @patch.object(BureauTransactionRepository, "_get_collection", return_value=fake_collection)
-async def test_get_user_unique_id_of_transaction_without_unique_id(mocked_repository):
+async def test_get_user_cpf_of_transaction_without_cpf(mocked_repository):
     fake_collection.find_one.return_value = fake_transaction
     fake_transaction.get.return_value = False
-    with pytest.raises(UniqueIdNotFound):
-        await BureauTransactionRepository.get_user_unique_id_of_transaction(fake_bureau_validation)
+    with pytest.raises(CpfNotFound):
+        await BureauTransactionRepository.get_user_cpf_of_transaction(fake_bureau_validation)
     mocked_repository.assert_called_once_with()
     fake_collection.find_one.assert_called_with({
         "transaction_id": fake_bureau_validation.uuid
@@ -84,10 +84,10 @@ async def test_get_user_unique_id_of_transaction_without_unique_id(mocked_reposi
 
 @pytest.mark.asyncio
 @patch.object(BureauTransactionRepository, "_get_collection", return_value=fake_collection)
-async def test_get_user_unique_id_of_transaction(mocked_repository):
+async def test_get_user_cpf_of_transaction(mocked_repository):
     fake_collection.find_one.return_value = fake_transaction
     fake_transaction.get.return_value = dummy_env
-    result = await BureauTransactionRepository.get_user_unique_id_of_transaction(fake_bureau_validation)
+    result = await BureauTransactionRepository.get_user_cpf_of_transaction(fake_bureau_validation)
     mocked_repository.assert_called_once_with()
     fake_collection.find_one.assert_called_with({
         "transaction_id": fake_bureau_validation.uuid
@@ -97,10 +97,10 @@ async def test_get_user_unique_id_of_transaction(mocked_repository):
 
 @pytest.mark.asyncio
 @patch.object(BureauTransactionRepository, "_get_collection", return_value=fake_collection)
-async def test_get_user_unique_id_of_transaction_without_transaction(mocked_repository):
+async def test_get_user_cpf_of_transaction_without_transaction(mocked_repository):
     fake_collection.find_one.return_value = None
     with pytest.raises(TransactionNotFound):
-        await BureauTransactionRepository.get_user_unique_id_of_transaction(fake_bureau_validation)
+        await BureauTransactionRepository.get_user_cpf_of_transaction(fake_bureau_validation)
     mocked_repository.assert_called_once_with()
     fake_collection.find_one.assert_called_with({
         "transaction_id": fake_bureau_validation.uuid

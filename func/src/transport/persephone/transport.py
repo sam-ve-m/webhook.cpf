@@ -12,10 +12,10 @@ class SendToPersephone:
 
     @classmethod
     async def register_user_cpf_validation_log(
-            cls, unique_id: str,
+            cls, cpf: str,
             webhook_message: WebHookMessage
     ):
-        message = webhook_message.log_schema(unique_id)
+        message = webhook_message.log_schema(cpf)
         success, sent_status = await Persephone.send_to_persephone(
             topic=config("PERSEPHONE_TOPIC"),
             partition=int(config("PERSEPHONE_PARTITION")),

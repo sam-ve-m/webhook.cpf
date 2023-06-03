@@ -17,8 +17,8 @@ class UserRepository(MongoDBInfrastructure):
         return cls.collection
 
     @classmethod
-    async def update_bureau_validation(cls, unique_id: str, bureau_validation: WebHookMessage):
-        user_filter = {"unique_id": unique_id}
+    async def update_bureau_validation(cls, cpf: str, bureau_validation: WebHookMessage):
+        user_filter = {"identifier_document.cpf": cpf}
         bureau_validation_information = {
             "$set": {
                 "bureau_validations.cpf": bureau_validation.status.value,

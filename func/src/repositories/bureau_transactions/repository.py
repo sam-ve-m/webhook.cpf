@@ -1,6 +1,6 @@
 from decouple import config
 
-from func.src.domain.exceptions.exceptions import TransactionNotFound, UniqueIdNotFound, TransactionWasNotUpdated
+from func.src.domain.exceptions.exceptions import TransactionNotFound, CpfNotFound, TransactionWasNotUpdated
 from func.src.domain.validator.webhook.validator import WebHookMessage
 from func.src.infrastructure.mongo_db.infrastructure import MongoDBInfrastructure
 
@@ -17,17 +17,17 @@ class BureauTransactionRepository(MongoDBInfrastructure):
         return cls.collection
 
     @classmethod
-    async def get_user_unique_id_of_transaction(cls, bureau_validation: WebHookMessage) -> str:
+    async def get_user_cpf_of_transaction(cls, bureau_validation: WebHookMessage) -> str:
         user_filter = {
             "transaction_id": bureau_validation.uuid
         }
         collection = cls._get_collection()
         transaction = await collection.find_one(user_filter)
         if not transaction:
-            raise TransactionNotFound
-        if not (unique_id := transaction.get("unique_id")):
-            raise UniqueIdNotFound
-        return unique_id
+            raise TransactionNotFound()
+        if not (cpf := transaction.get("cpf")):
+            raise CpfNotFound()
+        return cpf
 
     @classmethod
     async def update_bureau_transaction(cls, bureau_validation: WebHookMessage) -> bool:

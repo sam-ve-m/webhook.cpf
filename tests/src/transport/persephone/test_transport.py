@@ -11,7 +11,7 @@ from func.src.domain.exceptions.exceptions import NotSentToPersephone
 from func.src.transport.persephone.transport import SendToPersephone
 
 dummy_env = 0
-dummy_unique_id = "unique id"
+dummy_cpf = "unique id"
 stub_exchange_account = MagicMock()
 
 
@@ -22,8 +22,8 @@ stub_exchange_account = MagicMock()
 async def test_register_user_cpf_validation_log(
         mocked_persephone, mocked_env, mocked_log
 ):
-    await SendToPersephone.register_user_cpf_validation_log(dummy_unique_id, stub_exchange_account)
-    stub_exchange_account.log_schema.assert_called_once_with(dummy_unique_id)
+    await SendToPersephone.register_user_cpf_validation_log(dummy_cpf, stub_exchange_account)
+    stub_exchange_account.log_schema.assert_called_once_with(dummy_cpf)
     mocked_persephone.assert_called_once_with(
         topic=dummy_env,
         partition=dummy_env,
@@ -42,8 +42,8 @@ async def test_register_user_cpf_validation_log_raising(
         mocked_persephone, mocked_env, mocked_log
 ):
     with pytest.raises(NotSentToPersephone):
-        await SendToPersephone.register_user_cpf_validation_log(dummy_unique_id, stub_exchange_account)
-    stub_exchange_account.log_schema.assert_called_with(dummy_unique_id)
+        await SendToPersephone.register_user_cpf_validation_log(dummy_cpf, stub_exchange_account)
+    stub_exchange_account.log_schema.assert_called_with(dummy_cpf)
     mocked_persephone.assert_called_once_with(
         topic=dummy_env,
         partition=dummy_env,
