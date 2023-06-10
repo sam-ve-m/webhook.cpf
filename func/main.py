@@ -5,7 +5,7 @@ from etria_logger import Gladsheim
 
 from func.src.domain.enums.status_code.enum import InternalCode
 from func.src.domain.exceptions.exceptions import InvalidStatusReceived, UserWasNotUpdated, InvalidMessageTypeReceived, \
-    TransactionWasNotUpdated, TransactionNotFound, UniqueIdNotFound, ErrorSendingToIaraDatailCpfValidation, \
+    TransactionWasNotUpdated, TransactionNotFound, CpfNotFound, ErrorSendingToIaraDatailCpfValidation, \
     NotSentToPersephone
 from func.src.domain.models.response.model import ResponseModel
 from func.src.domain.validator.webhook.validator import WebHookMessage
@@ -27,7 +27,7 @@ async def caf_transaction() -> flask.Response:
             result=service_response
         ).build_http_response(status=HTTPStatus.OK)
 
-    except (TransactionNotFound, UniqueIdNotFound) as error:
+    except (TransactionNotFound, CpfNotFound) as error:
         Gladsheim.error(error=error, message=error.msg)
         response = ResponseModel(
             success=False,

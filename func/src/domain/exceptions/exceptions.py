@@ -1,9 +1,9 @@
 class TransactionNotFound(Exception):
-    msg = "BureauTransactionRepository.get_user_unique_id_of_transaction - Transaction was not updated"
+    msg = "BureauTransactionRepository.get_user_cpf_of_transaction - Transaction was not updated"
 
 
-class UniqueIdNotFound(Exception):
-    msg = "BureauTransactionRepository.get_user_unique_id_of_transaction - Unique Id was not updated"
+class CpfNotFound(Exception):
+    msg = "BureauTransactionRepository.get_user_cpf_of_transaction - Unique Id was not updated"
 
 
 class ErrorSendingToIaraDatailCpfValidation(Exception):

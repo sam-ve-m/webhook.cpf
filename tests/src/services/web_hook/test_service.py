@@ -19,7 +19,7 @@ dummy_success = True
 @patch.object(BureauApiTransport, "detail_transaction", return_value=dummy_webhook_message)
 @patch.object(SendToPersephone, "register_user_cpf_validation_log", return_value=dummy_webhook_message)
 @patch.object(BureauTransactionRepository, "update_bureau_transaction", return_value=dummy_webhook_message)
-@patch.object(BureauTransactionRepository, "get_user_unique_id_of_transaction", return_value=dummy_webhook_message)
+@patch.object(BureauTransactionRepository, "get_user_cpf_of_transaction", return_value=dummy_webhook_message)
 async def test_save_exchange_account_without_updating(
         mocked_get_id, mocked_repository, mocked_persephone,
         mocked_transport, mocked_update
