@@ -3,8 +3,8 @@ from unittest.mock import patch, call, AsyncMock
 import pytest
 from decouple import Config
 
-from src.domain.exceptions.exceptions import UserWasNotUpdated
-from src.repositories.user.repository import UserRepository
+from func.src.domain.exceptions.exceptions import UserWasNotUpdated
+from func.src.repositories.user.repository import UserRepository
 
 dummy_env = "dummy env"
 fake_collection = AsyncMock()
@@ -36,7 +36,7 @@ async def test_update_bureau_validation(mocked_repository, mocked_env):
     )
     mocked_repository.assert_called_once_with()
     fake_collection.update_one.assert_called_with(
-        {"unique_id": dummy_env},
+        {"identifier_document.cpf": dummy_env},
         {"$set": {
             "bureau_validations.cpf": fake_bureau_validation.status.value,
         }}
@@ -55,7 +55,7 @@ async def test_update_bureau_validation_user_not_found(mocked_repository, mocked
         )
     mocked_repository.assert_called_once_with()
     fake_collection.update_one.assert_called_with(
-        {"unique_id": dummy_env},
+        {"identifier_document.cpf": dummy_env},
         {"$set": {
             "bureau_validations.cpf": fake_bureau_validation.status.value,
         }}

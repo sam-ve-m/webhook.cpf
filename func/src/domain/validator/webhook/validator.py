@@ -1,8 +1,8 @@
 import orjson
 from dataclasses import dataclass
 
-from src.domain.enums.bureau.enum import BureauType, BureauStatus
-from src.domain.exceptions.exceptions import InvalidMessageTypeReceived, InvalidStatusReceived
+from func.src.domain.enums.bureau.enum import BureauType, BureauStatus
+from func.src.domain.exceptions.exceptions import InvalidMessageTypeReceived, InvalidStatusReceived
 
 
 @dataclass
@@ -38,9 +38,9 @@ class WebHookMessage:
             event_type=BureauType[event_type],
         )
 
-    def log_schema(self, unique_id: str) -> dict:
+    def log_schema(self, cpf: str) -> dict:
         schema = {
-            "unique_id": unique_id,
+            "cpf": cpf,
             "status": self.status.value,
         }
         return schema

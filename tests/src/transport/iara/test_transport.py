@@ -3,8 +3,8 @@ from unittest.mock import patch
 import pytest
 from iara_client import Iara, IaraTopics
 
-from src.domain.exceptions.exceptions import ErrorSendingToIaraDatailCpfValidation
-from src.transport.iara.transport import BureauApiTransport
+from func.src.domain.exceptions.exceptions import ErrorSendingToIaraDatailCpfValidation
+from func.src.transport.iara.transport import BureauApiTransport
 
 dummy_value = "dummy value"
 
@@ -21,7 +21,7 @@ async def test_detail_transaction_raising_error(mocked_transport):
         assert str(error) == dummy_value
     mocked_transport.assert_called_once_with(
         topic=IaraTopics.CAF_CPF_VALIDATION_DETAILS,
-        message={"unique_id": dummy_value},
+        message={"cpf": dummy_value},
     )
 
 
@@ -33,6 +33,6 @@ async def test_detail_transaction(mocked_transport):
     response = await BureauApiTransport.detail_transaction(dummy_value)
     mocked_transport.assert_called_once_with(
         topic=IaraTopics.CAF_CPF_VALIDATION_DETAILS,
-        message={"unique_id": dummy_value},
+        message={"cpf": dummy_value},
     )
     assert response is True

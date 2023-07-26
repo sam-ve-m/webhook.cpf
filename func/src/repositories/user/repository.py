@@ -1,8 +1,8 @@
 from decouple import config
 
-from src.domain.exceptions.exceptions import UserWasNotUpdated
-from src.domain.validator.webhook.validator import WebHookMessage
-from src.infrastructure.mongo_db.infrastructure import MongoDBInfrastructure
+from func.src.domain.exceptions.exceptions import UserWasNotUpdated
+from func.src.domain.validator.webhook.validator import WebHookMessage
+from func.src.infrastructure.mongo_db.infrastructure import MongoDBInfrastructure
 
 
 class UserRepository(MongoDBInfrastructure):
@@ -17,8 +17,8 @@ class UserRepository(MongoDBInfrastructure):
         return cls.collection
 
     @classmethod
-    async def update_bureau_validation(cls, unique_id: str, bureau_validation: WebHookMessage):
-        user_filter = {"unique_id": unique_id}
+    async def update_bureau_validation(cls, cpf: str, bureau_validation: WebHookMessage):
+        user_filter = {"identifier_document.cpf": cpf}
         bureau_validation_information = {
             "$set": {
                 "bureau_validations.cpf": bureau_validation.status.value,
